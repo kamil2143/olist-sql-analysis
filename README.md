@@ -75,4 +75,33 @@ Przed analizą sprawdziłem klucze, duplikaty, braki i spójności dat.
 └── README.md
 ```
 ## Uruchomienie
-Docker - w trakcie realizacji
+### Jak uruchomić projekt (Docker)
+Projekt jest w pełni zdockeryzowany - uruchomienie bazy danych **PostgreSQL 16**, automatyczny import plików CSV, weryfikacja liczby rekordów (`01_check_load.sql`) oraz utworzenie warstwy widoków analitycznych (`20_views.sql`) odbywa się jedną komendą.
+
+### Wymagania
+* Zainstalowany i uruchomiony **Docker Desktop**
+
+### Instalacja krok po kroku
+1. Sklonuj repozytorium i wejdź do głównego katalogu projektu:
+```bash
+   git clone https://github.com/kamil2143/olist-sql-analysis
+   cd olist-sql-analytics
+```
+2. Pobierz zbiór danych [Olist Brazilian E-Commerce (Kaggle)](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) i wypakuj pliki `.csv` bezpośrednio do folderu *data/*.
+3. Uruchom kontenery w tle:
+```bash
+docker compose up -d
+```
+4. Po załadowaniu plików baza jest gotowa do pracy:
+* **Panel WWW w przeglądarce (Adminer):** [http://localhost:8080](http://localhost:8080)
+    * **System:** `PostgreSQL`
+    * **Serwer:** `postgres`
+    * **Użytkownik:** `analyst`
+    * **Hasło:** `password123`
+    * **Baza danych:** `olist_dw`
+    * **Połączenie z klienta SQL (DBeaver / DataGrip):** Host `localhost`, Port `5432`, Baza `olist_dw`, User `analyst`, Hasło `password123`.
+
+#### Przydatne komendy
+* Podgląd logów inicjalizacji i weryfikacji ładowania danych: `docker compose logs postgres`
+* Zatrzymanie kontenerów (z zachowaniem danych w bazie): `docker compose down`
+* Pełny reset bazy danych od zera: `docker compose down -v`
