@@ -25,7 +25,7 @@ SELECT
 	review_id,
 	review_score AS wystawiona_ocena,
 	review_answer_timestamp,
-	ROW_NUMBER() OVER(PARTITION BY order_id ORDER BY review_answer_timestamp DESC, review_id) AS rn
+	ROW_NUMBER() OVER(PARTITION BY order_id ORDER BY review_answer_timestamp DESC NULLS LAST, review_id) AS rn
 FROM order_reviews
 ),
 wyczyszczone_daty AS(
